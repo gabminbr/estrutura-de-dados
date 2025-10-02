@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #define TAM 60
 
@@ -21,8 +22,14 @@ int main(void){
     for(int j = 0; j < TAM; j++){
       if(isalpha(palavra[j])){
         mensagem[index_msg] = palavra[j];
+        index_msg++;
       }  
     }
+
+    for(int j = 0; j <= index_msg; j++){
+      printf("%c", mensagem[j]);
+    }
+    printf("\n");
   }
 }
 
