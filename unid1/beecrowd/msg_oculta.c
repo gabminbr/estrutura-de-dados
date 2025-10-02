@@ -21,21 +21,22 @@ int main(void){
     
     index_msg = 0;
     int achou = 1;
-    for(int j = 0; j < TAM; j++){
+
+    for(int j = 0; j < sizeof(palavra); j++){
       if(isalpha(palavra[j]) && achou == 1){
+        printf("Index: %d\n", index_msg);
+        printf("Letra: %c\n", palavra[j]);
         mensagem[index_msg] = palavra[j];
         index_msg++;
         achou = 0;
       } else if (!isalpha(palavra[j])) {
         achou = 1;
-      }  
+      } 
     }
     
+    printf("O valor do index eh: %d\n", index_msg);
     mensagem[index_msg] = '\0';
-    for(int j = 0; j < index_msg; j++){
-      printf("%c", mensagem[j]);
-    }
-    printf("\n");
+    printf("Saida: %s\n", mensagem); 
   }
 }
 
