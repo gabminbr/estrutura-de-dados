@@ -22,10 +22,8 @@ int main(void){
     index_msg = 0;
     int achou = 1;
 
-    for(int j = 0; j < sizeof(palavra); j++){
+    for(int j = 0; palavra[j] != '\0'; j++){
       if(isalpha(palavra[j]) && achou == 1){
-        printf("Index: %d\n", index_msg);
-        printf("Letra: %c\n", palavra[j]);
         mensagem[index_msg] = palavra[j];
         index_msg++;
         achou = 0;
@@ -33,10 +31,9 @@ int main(void){
         achou = 1;
       } 
     }
-    
-    printf("O valor do index eh: %d\n", index_msg);
+     
     mensagem[index_msg] = '\0';
-    printf("Saida: %s\n", mensagem); 
+    printf("%s\n", mensagem); 
   }
 }
 
