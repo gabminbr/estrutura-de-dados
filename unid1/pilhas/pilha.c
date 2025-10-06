@@ -46,10 +46,5 @@ char get_topo(Pilha* p){
 }
 
 int is_palindromo(Pilha* p){
-  for(int i = 0; i < p->topo / 2; i++){
-    if(p->palavra[i] != p->palavra[p->topo - 1 - i]){
-      return 1;
-    }
-  }
-  return 0;
+  
 }
