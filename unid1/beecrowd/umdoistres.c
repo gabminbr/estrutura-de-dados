@@ -8,9 +8,9 @@ typedef struct palavra{
   int tam;
 }Palavra;
 
-int verifica_zero(Palavra* palavra);
 int verifica_um(Palavra* palavra);
 int verifica_dois(Palavra* palavra);
+int verifica_tres(Palavra* palavra);
 
 
 int main(void){
@@ -24,7 +24,11 @@ int main(void){
   for(int i = 0; i < a; i++){
     palavra->tam = 0;
     for(int j = 0; j < MAX; j++){
-      scanf("%c", palavra->palavra[j]);
+      scanf("%c", &palavra->palavra[j]);
+      if(palavra->palavra[j] == '\n'){
+        palavra->palavra[j] = '\0';
+        break;
+      }
       palavra->tam++;
     }
     
