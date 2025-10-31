@@ -98,45 +98,45 @@ void reverse_list(Lista *l){
 }
 
 // exercicio 3
-Lista* merge_sorted_lists(Lista *l1, Lista *l2){
-  Lista *new = cria_lista();
-  Nodo temp;
-  temp.prox = NULL;
-  
-  Nodo *cauda = &temp;
-  Nodo *p1 = l1->head;
-  Nodo *p2 = l2->head;
+Lista* merge_sorted_lists(Lista *l1, Lista *l2) {
+    Lista *l3 = cria_lista(); 
+    Nodo dummy;
+    dummy.prox = NULL; 
+    Nodo *cauda_l3 = &dummy;
 
-  while(p1 != NULL || p2 != NULL){
-    if(p1->info <= p2->info){
-      cauda->prox = p1;
-      p1 = p1->prox;
-    } else {
-      cauda->prox = p1;
-      p1 = p1->prox;
+    Nodo *p1 = l1->head;
+    Nodo *p2 = l2->head;
+
+    while (p1 != NULL && p2 != NULL) {
+        
+        if (p1->info <= p2->info) {
+            cauda_l3->prox = p1;
+            p1 = p1->prox; 
+        } else {
+            cauda_l3->prox = p2;
+            p2 = p2->prox; 
+        }
+
+        cauda_l3 = cauda_l3->prox;
     }
 
-    cauda = cauda->prox;
-  }
+    if (p1 == NULL) {
+        cauda_l3->prox = p2;
+    } else { // (p2 == NULL)
+        cauda_l3->prox = p1;
+    }
 
-  if(p1 != NULL){
-    cauda->prox = p1;
-  }
+    l3->head = dummy.prox;
+    l3->tam = l1->tam + l2->tam;
 
-  if(p2 != NULL){
-    cauda->prox = p2;
-  }
+    l1->head = NULL;
+    l1->tam = 0;
+    l2->head = NULL;
+    l2->tam = 0;
 
-  new->head = temp.prox;
-  new->tam = l1->tam + l2->tam;
-
-  l1->head = NULL;
-  l1->tam = 0;
-  l2->head = NULL;
-  l2->tam = 0;
-
-  return new;
+    return l3;
 }
+
 
 // exercicio 4
 void remove_duplicates(Lista *l){
@@ -244,6 +244,8 @@ void rotate_list(Lista *l, int k){
     ult = ult->prox;
   }
 
+  ult->prox = l->head;
+
   Nodo *novo_ult = l->head;
   int qtd_andar = n - k - 1;
 
@@ -261,48 +263,47 @@ void rotate_list(Lista *l, int k){
 // exercicio 7
 Lista* intercalate_lists(Lista* l1, Lista* l2){
   Lista *new_list = cria_lista();
-  new_list->tam = l1->tam + l2->tam;
+  
+  Nodo dummy;
+  dummy.prox = NULL;
+  Nodo *cauda = &dummy; 
 
   Nodo *n1 = l1->head;
   Nodo *n2 = l2->head;
-  
-  int qual_colocar = 0;
+
   while(n1 != NULL && n2 != NULL){
-    if(qual_colocar % 2 == 0){
-      insere_lista(new_list, n1->info);
-      n1 = n1->prox;
-    } else {
-      insere_lista(new_list, n2->info);
-      n2 = n2->prox;
-    }
-  
-    qual_colocar++;
-  }
-  
-  Nodo *last = new_list->head;
-  while(last->prox != NULL){
-    last = last->prox;
+    cauda->prox = n1;
+    cauda = n1;
+    n1 = n1->prox;
+
+    cauda->prox = n2;
+    cauda = n2;
+    n2 = n2->prox;
   }
 
-  if(n1 == NULL){
-    last->prox = n2;
+  if (n1 != NULL) {
+    cauda->prox = n1;
+  } else {
+    cauda->prox = n2;
   }
 
-  if(n2 == NULL){
-    last->prox = n1;
-  }
+  new_list->head = dummy.prox; 
+  new_list->tam = l1->tam + l2->tam;
+
+  l1->head = NULL; l1->tam = 0;
+  l2->head = NULL; l2->tam = 0;
   
   return new_list;
 }
 
 // exercicio 8
 int get_kth_element(Lista *l, int x){
-  if(l->tam < 1 || x < 0 || x > l->tam){
+  if(l == NULL || l->tam < 1 || x < 0 || x >= l->tam){
     return 0;
   }
 
   int index = 0;
-  int info;
+  int info = 0;
   Nodo *navegar = l->head;
 
   while(navegar != NULL){
@@ -361,10 +362,28 @@ void split_list(Lista* l, Lista **pares, Lista **impares){
 
 // exercicio 10
 void sort_list(Lista *l){
-  Nodo *atual = l->head;
-  Nodo *comparado = l->head->prox;
-  for (int i = 0; i < l->tam - i - 1; i++){
-    for(int j = 0; j < l->tam - j - 1; j++)
+  if (l == NULL || l->head == NULL || l->head->prox == NULL) {
+        return;
+    }
+  Nodo* atual = l->head;
+
+  while (atual != NULL) {
+    Nodo* menorNodo = atual; 
+    Nodo* corredor = atual->prox;
+
+    while (corredor != NULL) {
+      if (corredor->info < menorNodo->info) {
+        menorNodo = corredor;
+      }
+      corredor = corredor->prox;
+    }
+
+    if (menorNodo != atual) {
+      int temp = atual->info;
+      atual->info = menorNodo->info;
+      menorNodo->info = temp;
+    }
+
     atual = atual->prox;
   }
 }
