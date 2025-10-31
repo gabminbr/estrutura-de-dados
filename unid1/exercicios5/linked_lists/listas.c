@@ -59,7 +59,7 @@ void printar_lista(Lista *l){
   if(l->tam > 0){
     Nodo *p = l->head;
     while(p != NULL){
-      printf("%d\n", p);
+      printf("%d\n", p->info);
       p = p->prox;
     }
   }
@@ -227,5 +227,144 @@ int is_palindrome(Lista *l){
 
 // exercicio 6
 void rotate_list(Lista *l, int k){
+  if(l == NULL || l->head == NULL || l->tam <= 1){
+    return;
+  } 
 
+  int n = l->tam;
+
+  k = k % n;
+
+  if (k == 0){
+    return;
+  }
+
+  Nodo *ult = l->head;
+  while(ult->prox != NULL){
+    ult = ult->prox;
+  }
+
+  Nodo *novo_ult = l->head;
+  int qtd_andar = n - k - 1;
+
+  for(int i = 0; i < qtd_andar; i++){
+    novo_ult = novo_ult->prox;
+  }
+
+  Nodo *nova_head = novo_ult->prox;
+
+  novo_ult->prox = NULL;
+
+  l->head = nova_head;
+}
+
+// exercicio 7
+Lista* intercalate_lists(Lista* l1, Lista* l2){
+  Lista *new_list = cria_lista();
+  new_list->tam = l1->tam + l2->tam;
+
+  Nodo *n1 = l1->head;
+  Nodo *n2 = l2->head;
+  
+  int qual_colocar = 0;
+  while(n1 != NULL && n2 != NULL){
+    if(qual_colocar % 2 == 0){
+      insere_lista(new_list, n1->info);
+      n1 = n1->prox;
+    } else {
+      insere_lista(new_list, n2->info);
+      n2 = n2->prox;
+    }
+  
+    qual_colocar++;
+  }
+  
+  Nodo *last = new_list->head;
+  while(last->prox != NULL){
+    last = last->prox;
+  }
+
+  if(n1 == NULL){
+    last->prox = n2;
+  }
+
+  if(n2 == NULL){
+    last->prox = n1;
+  }
+  
+  return new_list;
+}
+
+// exercicio 8
+int get_kth_element(Lista *l, int x){
+  if(l->tam < 1 || x < 0 || x > l->tam){
+    return 0;
+  }
+
+  int index = 0;
+  int info;
+  Nodo *navegar = l->head;
+
+  while(navegar != NULL){
+    if(index == x){
+      info = navegar->info;
+      break;
+    }
+
+    navegar = navegar->prox;
+    index++;
+  }
+
+  return info;
+}
+
+// exercicio 9
+void split_list(Lista* l, Lista **pares, Lista **impares){
+  *pares = cria_lista();
+  *impares = cria_lista();
+  
+  Nodo par;
+  Nodo impar;
+  par.prox = NULL;
+  impar.prox = NULL;
+
+  Nodo *cauda_par = &par;
+  Nodo *cauda_impar = &impar;
+  Nodo *atual = l->head;
+  Nodo *proximo = NULL;
+
+  while(atual != NULL){
+    proximo = atual->prox;
+
+    if(atual->info % 2 == 0){
+      cauda_par->prox = atual;
+      cauda_par = atual;
+      (*pares)->tam++;
+    } else {
+      cauda_impar->prox = atual;
+      cauda_impar = atual;
+      (*impares)->tam++;
+    }
+
+    atual = proximo;
+  }
+
+  cauda_par->prox = NULL;
+  cauda_impar->prox = NULL;
+
+  (*pares)->head = par.prox;
+  (*impares)->head = impar.prox;
+
+  l->head = NULL;
+  l->tam = 0;
+}
+
+// exercicio 10
+void sort_list(Lista *l){
+  Nodo *atual = l->head;
+  Nodo *comparado = l->head->prox;
+  for (int i = 0; i < l->tam - i - 1; i++){
+    for(int j = 0; j < l->tam - j - 1; j++)
+    atual = atual->prox;
+  }
 }
